@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "../components/Home.js";
-import Trivia from "../components/Trivia.js";
+import Home from "../screens/Home.js";
+import Trivia from "../screens/Trivia.js";
 
 const Stack = createNativeStackNavigator();
 
-export default function NavHomeTrivia({ navigation, route }) {
+export default function NavHomeTrivia() {
   return (
     
     <Stack.Navigator initialRouteName="Home">
