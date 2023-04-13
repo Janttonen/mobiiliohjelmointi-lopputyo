@@ -1,4 +1,4 @@
-export const default_API = 'https://opentdb.com/api.php?amount=15&category=10&difficulty='
+export const default_API = 'https://opentdb.com/api.php?'
 
 export async function fetchJson(url) {
     try {

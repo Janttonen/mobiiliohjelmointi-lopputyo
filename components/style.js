@@ -7,4 +7,15 @@ export default StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    button: {
+      padding: 15,
+      borderRadius: 2,
+      borderWidth: 1,
+      borderColor: 'black',
+      backgroundColor: 'white',
+    },
+    text: {
+      fontSize: 18,
+      padding: 12,
+    },
   });

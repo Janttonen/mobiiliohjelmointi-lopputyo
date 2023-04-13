@@ -18,6 +18,7 @@ export default function Home({ navigation }) {
               onPress={() =>
                 navigation.navigate("Trivia", {
                   difficulty: option.value,
+                  amount: 5,
                 })
               }
             ></Button>
