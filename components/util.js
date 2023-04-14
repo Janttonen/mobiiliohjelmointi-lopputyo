@@ -13,7 +13,7 @@ export async function fetchJson(url) {
   }
 
   export const difficulty = [
-    {title: 'Easy', value: 'easy'},
-    {title: 'Medium', value: 'medium'},
-    {title: 'Hard', value: 'hard'}
+    {id: 1, title: 'Easy', value: 'easy'},
+    {id: 2,title: 'Medium', value: 'medium'},
+    {id:3, title: 'Hard', value: 'hard'}
   ]

@@ -7,24 +7,9 @@ import { difficulty } from "../util.js";
 export default function Home({ navigation }) {
   return (
     <View style={style.container}>
-      <Text>Otsikko, tervetuloa trivia peliin!</Text>
-      <Text>Valitse vaikeustaso! (Standard game)</Text>
+      <Text>Homepage</Text>
 
-      <View>
-        {difficulty.map((option) => {
-          return (
-            <Button
-              title={option.title}
-              onPress={() =>
-                navigation.navigate("Trivia", {
-                  difficulty: option.value,
-                  amount: 5,
-                })
-              }
-            ></Button>
-          );
-        })}
-      </View>
+
       <StatusBar style="auto" />
     </View>
   );

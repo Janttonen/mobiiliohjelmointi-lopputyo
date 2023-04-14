@@ -1,10 +1,11 @@
-import NavHomeTrivia from './components/navigation/NavHomeTrivia.js';
+import 'react-native-gesture-handler';
+import DrawerNav from './components/navigation/DrawerNav';
 import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <NavHomeTrivia />
+      <DrawerNav />
     </NavigationContainer>
   );
 }

@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
   Text,
   View,
   Button,
   TouchableOpacity,
 } from "react-native";
 import { default_API, fetchJson } from "../util.js";
-import Checkbox from "expo-checkbox";
 import style from "../style.js";
 
-// Triviapage
+// Trivia page
 export default function Trivia({ navigation, route }) {
-  // trivia
+
   const [trivia, setTrivia] = useState([]);
-  // points
   const [points, setPoints] = useState(0);
-  // index of the question
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [check, setCheck] = useState(false);
@@ -33,9 +29,9 @@ export default function Trivia({ navigation, route }) {
       navigation.navigate("Result", {
         points: points,
       });
+      setIndex(0)
     }
   }, [index]);
-  //täää nyt sekooo koska trivia lenght alussa nollla tms
 
   const fetchTrivia = () => {
     fetchJson(
@@ -88,6 +84,7 @@ export default function Trivia({ navigation, route }) {
 
             {currentQuestion?.options.map((item, index) => (
               <TouchableOpacity
+              key={index}
                 style={style.button}
                 onPress={() => checkAnswer(item)}
                 activeOpacity={0.5}
@@ -105,7 +102,6 @@ export default function Trivia({ navigation, route }) {
                     setIndex(index + 1), setCheck(false);
                   }}
                 />
-                <Button title="Prev" onPress={() => setIndex(index - 1)} />
               </View>
             ) : null}
           </View>
