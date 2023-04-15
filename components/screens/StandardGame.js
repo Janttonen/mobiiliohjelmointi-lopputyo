@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, Button } from "react-native";
 import style from "../style";
-import { difficulty } from "../util.js";
+import { gameOptions } from "../util.js";
 
 // Standard game
 export default function StandardGame({ navigation }) {
@@ -11,15 +11,17 @@ export default function StandardGame({ navigation }) {
       <Text>Valitse vaikeustaso! (Standard game)</Text>
 
       <View>
-        {difficulty.map((option) => {
+        {gameOptions.difficulty.map((option) => {
           return (
             <Button
               key={option.id}
               title={option.title}
               onPress={() =>
                 navigation.navigate("Trivia", {
+                
                   difficulty: option.value,
                   amount: 5,
+                  category: 0,
                 })
               }
             ></Button>

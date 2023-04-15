@@ -8,8 +8,6 @@ export default function Home({ navigation }) {
   return (
     <View style={style.container}>
       <Text>Homepage</Text>
-
-
       <StatusBar style="auto" />
     </View>
   );

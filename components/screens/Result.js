@@ -17,7 +17,9 @@ export default function Result({navigation, route}){
            <Button
               title='Home page'
               onPress={() =>
-                navigation.navigate("Choose game")
+                navigation.navigate("Drawer", {
+                  screen: 'Home page'
+                })
               }
             ></Button>
         </View>

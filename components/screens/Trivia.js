@@ -11,13 +11,11 @@ import style from "../style.js";
 
 // Trivia page
 export default function Trivia({ navigation, route }) {
-
   const [trivia, setTrivia] = useState([]);
   const [points, setPoints] = useState(0);
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [check, setCheck] = useState(false);
-
   const currentQuestion = trivia[index];
 
   useEffect(() => {
@@ -29,31 +27,45 @@ export default function Trivia({ navigation, route }) {
       navigation.navigate("Result", {
         points: points,
       });
-      setIndex(0)
     }
   }, [index]);
 
+  const checkUrl = () => {
+    if (route.params.category === 0 && route.params.difficulty === 'any') {
+      return `${default_API}${route.params.amount}`;
+    }else if(route.params.category === 0 ){
+      return `${default_API}${route.params.amount}&difficulty=${route.params.difficulty}`;
+    } else {
+      return `${default_API}${route.params.amount}&category=${route.params.category}&difficulty=${route.params.difficulty}`;
+    }
+  };
+
   const fetchTrivia = () => {
-    fetchJson(
-      `${default_API}amount=${route.params.amount}&difficulty=${route.params.difficulty}`
-    ).then((data) => {
-      data.results.map((q) => {
-        setTrivia((prevState) => [
-          ...prevState,
-          {
-            category: q.category,
-            correct_answer: q.correct_answer,
-            difficulty: q.difficulty,
-            incorrect_answers: q.incorrect_answers,
-            question: q.question,
-            type: q.type,
-            options: q.incorrect_answers
-              .concat(q.correct_answer)
-              .sort(() => 0.5 - Math.random()),
-          },
-        ]);
-      });
-    });
+    try {
+      const url = checkUrl();
+      if (url) {
+        fetchJson(url).then((data) => {
+          data.results.map((q) => {
+            setTrivia((prevState) => [
+              ...prevState,
+              {
+                category: q.category,
+                correct_answer: q.correct_answer,
+                difficulty: q.difficulty,
+                incorrect_answers: q.incorrect_answers,
+                question: q.question,
+                type: q.type,
+                options: q.incorrect_answers
+                  .concat(q.correct_answer)
+                  .sort(() => 0.5 - Math.random()),
+              },
+            ]);
+          });
+        });
+      }
+    } catch (error) {
+      console.error('fetchTrivia error: ', error);
+    }
   };
 
   // check given answer and give points if correct
@@ -84,7 +96,7 @@ export default function Trivia({ navigation, route }) {
 
             {currentQuestion?.options.map((item, index) => (
               <TouchableOpacity
-              key={index}
+                key={index}
                 style={style.button}
                 onPress={() => checkAnswer(item)}
                 activeOpacity={0.5}
