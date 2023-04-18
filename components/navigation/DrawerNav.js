@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerActions, useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 import Home from '../screens/Home'
 import StandardGame from "../screens/StandardGame";
 import CustomGame from "../screens/CustomGame";

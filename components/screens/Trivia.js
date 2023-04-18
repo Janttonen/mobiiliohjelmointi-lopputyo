@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Text,
   View,
   Button,
@@ -18,6 +19,24 @@ export default function Trivia({ navigation, route }) {
   const [check, setCheck] = useState(false);
   const currentQuestion = trivia[index];
 
+  // listen if user tries to leave page
+  // https://reactnavigation.org/docs/preventing-going-back/
+  useEffect(() => {
+    navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault();
+
+      Alert.alert("Leaving so soon?", 
+      'Are you sure to leave the game, you will lose your progress :(', [
+        { text: "No", style: "cancel", onPress: () => {} },
+        {
+          text: 'Yes',
+          style: "destructive",
+          onPress: () => navigation.dispatch(e.data.action),
+        },
+      ]);
+    });
+  }, [navigation]);
+
   useEffect(() => {
     fetchTrivia();
   }, []);
@@ -31,9 +50,9 @@ export default function Trivia({ navigation, route }) {
   }, [index]);
 
   const checkUrl = () => {
-    if (route.params.category === 0 && route.params.difficulty === 'any') {
+    if (route.params.category === 0 && route.params.difficulty === "any") {
       return `${default_API}${route.params.amount}`;
-    }else if(route.params.category === 0 ){
+    } else if (route.params.category === 0) {
       return `${default_API}${route.params.amount}&difficulty=${route.params.difficulty}`;
     } else {
       return `${default_API}${route.params.amount}&category=${route.params.category}&difficulty=${route.params.difficulty}`;
@@ -64,7 +83,7 @@ export default function Trivia({ navigation, route }) {
         });
       }
     } catch (error) {
-      console.error('fetchTrivia error: ', error);
+      console.error("fetchTrivia error: ", error);
     }
   };
 
