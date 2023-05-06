@@ -17,26 +17,34 @@ export default function Trivia({ navigation, route }) {
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [check, setCheck] = useState(false);
+  const [gameResults, setGameResults] = useState([]);
+
   const currentQuestion = trivia[index];
 
   // listen if user tries to leave page
   // https://reactnavigation.org/docs/preventing-going-back/
+
+  // https://reactnavigation.org/docs/use-is-focused/
+
   useEffect(() => {
     navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
-
-      Alert.alert("Leaving so soon?", 
-      'Are you sure to leave the game, you will lose your progress :(', [
-        { text: "No", style: "cancel", onPress: () => {} },
-        {
-          text: 'Yes',
-          style: "destructive",
-          onPress: () => navigation.dispatch(e.data.action),
-        },
-      ]);
+      Alert.alert(
+        "Your game is paused",
+        "You can resume to current game or start new game",
+        [
+          { text: "Resume", style: "cancel", onPress: () => {} },
+          {
+            text: "Leave current game",
+            style: "destructive",
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ]
+      );
     });
   }, [navigation]);
 
+  //points data?? like navigation yms yms yms
   useEffect(() => {
     fetchTrivia();
   }, []);
@@ -44,7 +52,11 @@ export default function Trivia({ navigation, route }) {
   useEffect(() => {
     if (index + 1 > route.params.amount) {
       navigation.navigate("Result", {
-        points: points,
+        category: route.params.category,
+        gameresults: {
+          points: points,
+          details: gameResults,
+        },
       });
     }
   }, [index]);
@@ -91,11 +103,17 @@ export default function Trivia({ navigation, route }) {
   const checkAnswer = (answer) => {
     setCheck(true);
     if (answer === currentQuestion.correct_answer) {
-      setAnswer(`Oikein meni!`);
+      setAnswer(`You are correct!`);
       setPoints(points + 1);
     } else {
-      setAnswer(`Väärin meni, oikea vastaus ${currentQuestion.correct_answer}`);
+      setAnswer(`Wrong :( Correct answer is ${currentQuestion.correct_answer}`);
     }
+
+    // save your answers for firebase data
+    setGameResults((prevState) => [
+      ...prevState,
+      { question: currentQuestion, youranswer: answer },
+    ]);
   };
 
   return (
@@ -117,7 +135,8 @@ export default function Trivia({ navigation, route }) {
               <TouchableOpacity
                 key={index}
                 style={style.button}
-                onPress={() => checkAnswer(item)}
+                onPress={() => {if (check == false) {
+                  checkAnswer(item)}}}
                 activeOpacity={0.5}
               >
                 <Text>{item}</Text>
@@ -134,11 +153,13 @@ export default function Trivia({ navigation, route }) {
                   }}
                 />
               </View>
-            ) : null}
+            ) : (
+              []
+            )}
           </View>
         </>
       ) : (
-        "jotain meni väärin"
+        "Something went wrong"
       )}
     </View>
   );

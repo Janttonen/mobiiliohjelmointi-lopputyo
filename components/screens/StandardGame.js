@@ -5,6 +5,7 @@ import { gameOptions } from "../util.js";
 
 // Standard game
 export default function StandardGame({ navigation }) {
+
   return (
     <View style={style.container}>
       <Text>Otsikko, tervetuloa trivia peliin!</Text>
