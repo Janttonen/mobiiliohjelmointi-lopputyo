@@ -17,9 +17,16 @@ export default function Profile({ navigation }) {
     onValue(ref(database, "/played-games/"), (snapshot) => {
       const data = snapshot.val();
 
-      if (data) {
-        setData(Object.values(data));
-      }
+      const keys = Object.keys(data);
+      // Combine keys with data 
+      const dataWithKeys = Object.values(data).map((obj, index) => { 
+        return {...obj, key: keys[index] } 
+      });
+
+      setData(dataWithKeys);
+      
+      console.log(data)
+      console.log(Object.keys(data))
     });
     
   }, []);
@@ -31,18 +38,33 @@ export default function Profile({ navigation }) {
       {data ? (
         <>
         <View>
-          {data.map((item) => {
+          {data.map((item, key) => {
             return (
               <>
                 <Text>Played game details:</Text>
-                <Text>{item.game.points}</Text>
-                {item.game.details.map((y) => {
-                    return(<>
+               
+                <Text>{item.game[1].game} game</Text>
+                <Text>{item.game[1].date} game</Text>
+                <Text>Collected points: {item.game[1].points}</Text>
+
+                <Text
+                  
+                  onPress={() =>
+                    navigation.navigate('PlayedGameDetails', {
+                      id: item.key,
+                    })
+                  }
+                >
+                  more details
+                </Text>
+                {/*item.game.details.map((y) => {
+                    return(
+                    <>
+                    <Text>{y.question.category}</Text>
                 <Text>{y.question.question}</Text>
-                <Text>{y.question.correct_answer}</Text>
-                <Text>{y.youranswer}</Text>
+                
                 </>)
-               })}
+               })*/}
               </>
             );
           })}

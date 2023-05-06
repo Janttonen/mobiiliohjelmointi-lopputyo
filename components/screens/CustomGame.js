@@ -12,7 +12,7 @@ export default function CustomGame({ navigation }) {
   const [inputs, setInputs] = useState({
     category: null,
     difficulty: "",
-    amount: null,
+    amount: null, 
   });
   const [errorInput, setErrorInput] = useState("");
 
@@ -31,6 +31,7 @@ export default function CustomGame({ navigation }) {
   const validInput = () => {
     if (inputs.amount > 0 && inputs.amount < 50) {
       navigation.navigate("Trivia", {
+        game: 'custom',
         difficulty: inputs.difficulty,
         amount: inputs.amount,
         category: inputs.category,

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { default_API, fetchJson } from "../util.js";
 import style from "../style.js";
+import { saveItems } from "../firebase.js";
 
 // Trivia page
 export default function Trivia({ navigation, route }) {
@@ -44,23 +45,27 @@ export default function Trivia({ navigation, route }) {
     });
   }, [navigation]);
 
-  //points data?? like navigation yms yms yms
   useEffect(() => {
     fetchTrivia();
+    setIndex(0);
   }, []);
 
   useEffect(() => {
     if (index + 1 > route.params.amount) {
+      const date = new Date().toLocaleDateString("de-DE");
+
+      saveItems([
+        gameResults,
+        { points: 1, game: route.params.game, date: date },
+      ]);
       navigation.navigate("Result", {
-        category: route.params.category,
-        gameresults: {
-          points: points,
-          details: gameResults,
-        },
+        game: route.params.game,
+        points: points,
       });
     }
   }, [index]);
 
+ 
   const checkUrl = () => {
     if (route.params.category === 0 && route.params.difficulty === "any") {
       return `${default_API}${route.params.amount}`;
@@ -103,16 +108,23 @@ export default function Trivia({ navigation, route }) {
   const checkAnswer = (answer) => {
     setCheck(true);
     if (answer === currentQuestion.correct_answer) {
-      setAnswer(`You are correct!`);
       setPoints(points + 1);
+      setAnswer(`Correct!`);
     } else {
       setAnswer(`Wrong :( Correct answer is ${currentQuestion.correct_answer}`);
     }
 
     // save your answers for firebase data
+    // question, difficulty, category and did player get points
     setGameResults((prevState) => [
       ...prevState,
-      { question: currentQuestion, youranswer: answer },
+      {
+        category: currentQuestion.category,
+        difficulty: currentQuestion.difficulty,
+        question: currentQuestion.question,
+        correct_answer: currentQuestion.correct_answer,
+        your_answer: answer,
+      },
     ]);
   };
 
@@ -135,8 +147,11 @@ export default function Trivia({ navigation, route }) {
               <TouchableOpacity
                 key={index}
                 style={style.button}
-                onPress={() => {if (check == false) {
-                  checkAnswer(item)}}}
+                onPress={() => {
+                  if (check == false) {
+                    checkAnswer(item);
+                  }
+                }}
                 activeOpacity={0.5}
               >
                 <Text>{item}</Text>

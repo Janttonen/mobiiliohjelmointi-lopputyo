@@ -19,7 +19,7 @@ export default function StandardGame({ navigation }) {
               title={option.title}
               onPress={() =>
                 navigation.navigate("Trivia", {
-                
+                  game: 'standard',
                   difficulty: option.value,
                   amount: 5,
                   category: 0,
