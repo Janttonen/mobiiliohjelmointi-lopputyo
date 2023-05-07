@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, Text, View, FlatList } from "react-native";
 import style from "../style";
 import { firebaseConfig } from "../firebase.js";
@@ -35,7 +34,7 @@ export default function PlayedGameDetails({ navigation, route }) {
                 <Text style={style.h4}>
                   {item[1].date} / {item[1].game} game
                 </Text>
-                <Text style={style.h4}>Collected points: {item[1].points}</Text>
+                <Text style={style.h4}>Collected points: {item[1].points} / {item[0].length}</Text>
 
                 <FlatList
                   data={item[0].map((q, index) => ({
@@ -47,7 +46,7 @@ export default function PlayedGameDetails({ navigation, route }) {
                   }))}
                   keyExtractor={(item, index) => index}
                   renderItem={({ item }) => (
-                    <View style={style.textContainer}>
+                    <View style={{ margin: 10 }}>
                       <Text style={style.text}>{item.category}</Text>
                       <Text style={style.text}>
                         Difficulty: {item.difficulty}

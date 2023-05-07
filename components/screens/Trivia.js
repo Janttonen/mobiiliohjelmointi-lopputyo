@@ -7,7 +7,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import { default_API, fetchJson } from "../util.js";
+import { fetchJson, checkUrl } from "../util.js";
 import style from "../style.js";
 import { saveItems } from "../firebase.js";
 
@@ -54,7 +54,7 @@ export default function Trivia({ navigation, route }) {
 
       saveItems([
         gameResults,
-        { points: 1, game: route.params.game, date: date },
+        { points: points, game: route.params.game, date: date },
       ]);
       navigation.navigate("Result", {
         game: route.params.game,
@@ -63,33 +63,27 @@ export default function Trivia({ navigation, route }) {
     }
   }, [index]);
 
-  const checkUrl = () => {
-    if (route.params.category === 0 && route.params.difficulty === "any") {
-      return `${default_API}${route.params.amount}`;
-    } else if (route.params.category === 0) {
-      return `${default_API}${route.params.amount}&difficulty=${route.params.difficulty}`;
-    } else {
-      return `${default_API}${route.params.amount}&category=${route.params.category}&difficulty=${route.params.difficulty}`;
-    }
-  };
-
   const fetchTrivia = () => {
     try {
-      const url = checkUrl();
+      const url = checkUrl(
+        route.params.category,
+        route.params.difficulty,
+        route.params.amount
+      );
       if (url) {
         fetchJson(url).then((data) => {
           data.results.map((q) => {
             setTrivia((prevState) => [
               ...prevState,
               {
-                category: q.category,
-                correct_answer: q.correct_answer,
-                difficulty: q.difficulty,
-                incorrect_answers: q.incorrect_answers,
-                question: q.question,
-                type: q.type,
+                category: decodeURIComponent(q.category),
+                correct_answer: decodeURIComponent(q.correct_answer),
+                difficulty: decodeURIComponent(q.difficulty),
+                question: decodeURIComponent(q.question),
+                type: decodeURIComponent(q.type),
                 options: q.incorrect_answers
-                  .concat(q.correct_answer)
+                  .map((q) => decodeURIComponent(q))
+                  .concat(decodeURIComponent(q.correct_answer))
                   .sort(() => 0.5 - Math.random()),
               },
             ]);
@@ -112,7 +106,7 @@ export default function Trivia({ navigation, route }) {
     }
 
     // save your answers for firebase data
-    // question, difficulty, category and did player get points
+    // question, difficulty, category, answer
     setGameResults((prevState) => [
       ...prevState,
       {
@@ -130,72 +124,60 @@ export default function Trivia({ navigation, route }) {
       <ActivityIndicator size="small" animating={!trivia} />
 
       {trivia ? (
-        <>
-          <View style={{ margin: 20 }}>
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  fontSize: 25,
-                  color: "#000",
-                  fontFamily: "Nunito_300Light",
-                  flexShrink: 1,
-                  fontWeight: "bold",
-                }}
-              >
-                Question {index + 1} of {route.params.amount}
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "#000",
-                  fontFamily: "Nunito_300Light",
-                  flexShrink: 1,
-                  fontWeight: "bold",
-                }}
-              >
-                {currentQuestion?.question}
-              </Text>
+        <View style={{ margin: 6 }}>
+          <View style={{ alignItems: "center" }}>
+            <Text style={style.h3bold}>
+              Question {index + 1} of {route.params.amount}
+            </Text>
+            <View
+              style={{
+                marginTop: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={style.h4bold}>{currentQuestion?.category}</Text>
+              <Text style={style.h4}>{currentQuestion?.question}</Text>
             </View>
-            <View style={style.headerContainer2}>
-              {currentQuestion?.options.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={style.buttonGame}
-                  onPress={() => {
-                    if (check == false) {
-                      checkAnswer(item);
-                    }
-                  }}
-                  activeOpacity={1}
-                >
-                  <Text style={style.text}>{item}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {check == true ? (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={style.text}>{answer}</Text>
-                <Pressable
-                  style={style.buttonPink}
-                  onPress={() => {
-                    setIndex(index + 1), setCheck(false);
-                  }}
-                >
-                  <Text style={style.h4white}>Next</Text>
-                </Pressable>
-              </View>
-            ) : (
-              []
-            )}
           </View>
-        </>
+          <View style={style.headerContainer2}>
+            {currentQuestion?.options.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={style.buttonGame}
+                onPress={() => {
+                  if (check == false) {
+                    checkAnswer(item);
+                  }
+                }}
+                activeOpacity={1}
+              >
+                <Text style={style.text}>{item}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {check == true ? (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={style.text}>{answer}</Text>
+              <Pressable
+                style={style.buttonPink}
+                onPress={() => {
+                  setIndex(index + 1), setCheck(false);
+                }}
+              >
+                <Text style={style.h4white}>Next</Text>
+              </Pressable>
+            </View>
+          ) : (
+            []
+          )}
+        </View>
       ) : (
         "Something went wrong"
       )}

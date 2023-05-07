@@ -19,6 +19,13 @@ export default StyleSheet.create({
     fontFamily: "Nunito_300Light",
     flexShrink: 1,
   },
+  h3bold: {
+    fontSize: 25,
+    color: "#BB79BD",
+    fontFamily: "Nunito_300Light",
+    flexShrink: 1,
+    fontWeight: "bold",
+  },
   h4: {
     fontSize: 20,
     color: "#000",
@@ -31,6 +38,14 @@ export default StyleSheet.create({
     fontFamily: "Nunito_300Light",
     flexShrink: 1,
   },
+  h4bold: {
+    fontSize: 20,
+    color: "#459ECF",
+    fontFamily: "Nunito_300Light",
+    flexShrink: 1,
+    fontWeight: "bold",
+  },
+
   horizontal: {
     flexDirection: "row",
     flex: 0.5,
@@ -69,10 +84,9 @@ export default StyleSheet.create({
   buttonPink: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 10,
+    margin: 5,
     backgroundColor: "#BB79BD",
-    borderRadius: 5,
+    borderRadius: 10,
     width: "65%",
     height: 50,
   },
@@ -104,11 +118,11 @@ export default StyleSheet.create({
     borderColor: "#459ECF",
     borderRadius: 5,
     margin: 2,
-    width: "80%",
+    width: "90%",
     height: 60,
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#000",
     fontFamily: "Nunito_300Light",
   },
@@ -120,5 +134,6 @@ export default StyleSheet.create({
     height: 30,
     borderBottomColor: "#000",
     borderBottomWidth: 2,
+    fontFamily: "Nunito_300Light",
   },
 });

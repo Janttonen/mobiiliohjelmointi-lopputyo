@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   ImageBackground,
@@ -15,7 +14,7 @@ export default function Home({ navigation }) {
   return (
     <SafeAreaView style={style.container}>
       <ImageBackground source={mainpage} style={{ flex: 1 }}>
-        <View>
+        <View style={{ margin: 10 }}>
           <View style={style.headerContainer}>
             <Text style={style.h1}>Welcome to Trivia Game App!</Text>
             <Text style={style.h2}>
@@ -23,7 +22,7 @@ export default function Home({ navigation }) {
             </Text>
           </View>
         </View>
-        <View style={{ alignItems: "center", marginTop: 40, marginBottom: 10 }}>
+        <View style={{ alignItems: "center", marginTop: 10, marginBottom: 10 }}>
           <Pressable
             style={style.button}
             onPress={() => navigation.navigate("Profile")}

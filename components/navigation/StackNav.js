@@ -1,7 +1,6 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-
 import Trivia from "../screens/Trivia.js";
 import Result from "../screens/Result.js";
 import ProfileScreen from "../screens/Profile.js";

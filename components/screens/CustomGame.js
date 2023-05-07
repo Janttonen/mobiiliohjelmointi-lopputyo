@@ -50,7 +50,7 @@ export default function CustomGame({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <View style={style.textContainer}>
+      <View style={{ margin: 10 }}>
         <View style={style.headerContainer2}>
           <Text
             style={{
@@ -71,7 +71,7 @@ export default function CustomGame({ navigation }) {
 
         {categories != [] ? (
           <>
-            <View style={style.textContainer}>
+            <View style={{ margin: 10 }}>
               <View style={style.textContainer}>
                 <Text style={style.text}>Search by category</Text>
                 <Picker
@@ -119,12 +119,16 @@ export default function CustomGame({ navigation }) {
                   style={style.input}
                 />
               </View>
-              {errorInput ? <Text>{errorInput}</Text> : []}
+              {errorInput ? (
+                <Text style={{ color: "#C2171D" }}>{errorInput}</Text>
+              ) : (
+                []
+              )}
               <View style={style.horizontal}>
                 <Pressable
                   style={style.buttonClear}
                   onPress={() => {
-                    setInputs({ category: null, difficulty: "", amount: null });
+                    setInputs({ category: 0, difficulty: "", amount: null });
                     setErrorInput("");
                   }}
                 >
