@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useEffect } from "react";
+
 import Trivia from "../screens/Trivia.js";
 import Result from "../screens/Result.js";
-import Profile from "../screens/Profile.js";
+import ProfileScreen from "../screens/Profile.js";
 import PGD from "../screens/PlayedGameDetails.js";
 import StandardGame from "../screens/StandardGame.js";
-import CustomGame from "../screens/CustomGame.js"
+import CustomGame from "../screens/CustomGame.js";
 
 // create stack navigation for standard game
 const StackA = createNativeStackNavigator();
@@ -16,12 +18,10 @@ const StackB = createNativeStackNavigator();
 // create navigation for profile
 const StackC = createNativeStackNavigator();
 
-
-export const StandardStack = ({navigation}) => {
-
+export const StandardStack = ({ navigation }) => {
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      navigation.navigate("Standard")
+    navigation.addListener("focus", () => {
+      navigation.navigate("Standard");
     });
   }, [navigation]);
 
@@ -30,22 +30,18 @@ export const StandardStack = ({navigation}) => {
       screenOptions={{
         headerShown: false,
       }}
-   
     >
-      <StackA.Screen name="Standard" component={StandardGame}/>
+      <StackA.Screen name="Standard" component={StandardGame} />
       <StackA.Screen name="Trivia" component={Trivia} />
-      <StackA.Screen name="Result" component={Result} 
-    
-  />
+      <StackA.Screen name="Result" component={Result} />
     </StackA.Navigator>
   );
-}
+};
 
-export const CustomStack = ({navigation}) => {
-
+export const CustomStack = ({ navigation }) => {
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      navigation.navigate("Custom")
+    navigation.addListener("focus", () => {
+      navigation.navigate("Custom");
     });
   }, [navigation]);
 
@@ -54,24 +50,33 @@ export const CustomStack = ({navigation}) => {
       screenOptions={{
         headerShown: false,
       }}
-    
-      
     >
       <StackB.Screen name="Custom" component={CustomGame} />
       <StackB.Screen name="Trivia" component={Trivia} />
       <StackB.Screen name="Result" component={Result} />
     </StackB.Navigator>
   );
-}
+};
 
-
-export const ProfileStack = ({navigation}) => {
-
+export const ProfileStack = ({ navigation }) => {
   return (
-    <StackC.Navigator
-    >
-      <StackC.Screen name="Profile" component={Profile} />
-      <StackC.Screen name="PlayedGameDetails" component={PGD} />
+    <StackC.Navigator>
+      <StackC.Screen name="ProfileScreen" component={ProfileScreen}  options={{
+        headerShown: false,
+      }}/>
+      <StackC.Screen name="Details" component={PGD}  options={{
+          title: 'Go back',
+          headerLeft: () => (
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              //style={style.menuIcon}
+              onPress={() => {
+                navigation.navigate('ProfileScreen');
+              }}
+            />
+          ),
+        }} />
     </StackC.Navigator>
   );
-}
+};

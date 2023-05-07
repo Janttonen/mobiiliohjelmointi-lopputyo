@@ -4,7 +4,7 @@ import {
   Alert,
   Text,
   View,
-  Button,
+  Pressable,
   TouchableOpacity,
 } from "react-native";
 import { default_API, fetchJson } from "../util.js";
@@ -24,9 +24,7 @@ export default function Trivia({ navigation, route }) {
 
   // listen if user tries to leave page
   // https://reactnavigation.org/docs/preventing-going-back/
-
   // https://reactnavigation.org/docs/use-is-focused/
-
   useEffect(() => {
     navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
@@ -65,7 +63,6 @@ export default function Trivia({ navigation, route }) {
     }
   }, [index]);
 
- 
   const checkUrl = () => {
     if (route.params.category === 0 && route.params.difficulty === "any") {
       return `${default_API}${route.params.amount}`;
@@ -134,39 +131,65 @@ export default function Trivia({ navigation, route }) {
 
       {trivia ? (
         <>
-          <View>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              Question {index + 1} of {route.params.amount}
-            </Text>
-
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              {currentQuestion?.question}
-            </Text>
-
-            {currentQuestion?.options.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={style.button}
-                onPress={() => {
-                  if (check == false) {
-                    checkAnswer(item);
-                  }
+          <View style={{ margin: 20 }}>
+            <View style={{ alignItems: "center" }}>
+              <Text
+                style={{
+                  fontSize: 25,
+                  color: "#000",
+                  fontFamily: "Nunito_300Light",
+                  flexShrink: 1,
+                  fontWeight: "bold",
                 }}
-                activeOpacity={0.5}
               >
-                <Text>{item}</Text>
-              </TouchableOpacity>
-            ))}
+                Question {index + 1} of {route.params.amount}
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#000",
+                  fontFamily: "Nunito_300Light",
+                  flexShrink: 1,
+                  fontWeight: "bold",
+                }}
+              >
+                {currentQuestion?.question}
+              </Text>
+            </View>
+            <View style={style.headerContainer2}>
+              {currentQuestion?.options.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={style.buttonGame}
+                  onPress={() => {
+                    if (check == false) {
+                      checkAnswer(item);
+                    }
+                  }}
+                  activeOpacity={1}
+                >
+                  <Text style={style.text}>{item}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
 
             {check == true ? (
-              <View>
-                <Text>{answer}</Text>
-                <Button
-                  title="Next"
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={style.text}>{answer}</Text>
+                <Pressable
+                  style={style.buttonPink}
                   onPress={() => {
                     setIndex(index + 1), setCheck(false);
                   }}
-                />
+                >
+                  <Text style={style.h4white}>Next</Text>
+                </Pressable>
               </View>
             ) : (
               []

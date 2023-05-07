@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, Text, View, Button } from "react-native";
+import { ActivityIndicator, Text, View, FlatList } from "react-native";
 import style from "../style";
 import { firebaseConfig } from "../firebase.js";
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -19,48 +19,58 @@ export default function PlayedGameDetails({ navigation, route }) {
 
       const result = Object.values(data);
       setData(result);
-      console.log(data);
     });
   }, []);
 
   return (
-    <View>
-      <ActivityIndicator size="small" animating={!data} />
-      <Text>GameDetails</Text>
-      {data && data != null ? (
-        <>
-          <View>
-            {data.map((item) => {
-              return (
-                <>
-                  <Text>Played game details:</Text>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View style={style.container}>
+        <ActivityIndicator size="small" animating={!data} />
 
-                  <Text>{item[1].date}</Text>
-                  <Text>{item[1].game} game</Text>
-                  <Text>Collected points: {item[1].points}</Text>
+        {data ? (
+          <FlatList
+            data={data}
+            renderItem={({ item }) => (
+              <View style={style.textContainer}>
+                <Text style={style.h4}>
+                  {item[1].date} / {item[1].game} game
+                </Text>
+                <Text style={style.h4}>Collected points: {item[1].points}</Text>
 
-                  <Text>Questions:</Text>
-                  {item[0].map((q) => {
-                    return (
-                      <>
-                        <Text>{q.category}</Text>
-                        <Text>{q.difficulty}</Text>
-                        <Text>{q.question}</Text>
-                        <Text>{q.correct_answer}</Text>
-                        <Text>{q.your_answer}</Text>
-                      </>
-                    );
-                  })}
-                </>
-              );
-            })}
-          </View>
-        </>
-      ) : (
-        []
-      )}
-
-      <StatusBar style="auto" />
+                <FlatList
+                  data={item[0].map((q, index) => ({
+                    category: q.category,
+                    difficulty: q.difficulty,
+                    question: q.question,
+                    correct_answer: q.correct_answer,
+                    your_answer: q.your_answer,
+                  }))}
+                  keyExtractor={(item, index) => index}
+                  renderItem={({ item }) => (
+                    <View style={style.textContainer}>
+                      <Text style={style.text}>{item.category}</Text>
+                      <Text style={style.text}>
+                        Difficulty: {item.difficulty}
+                      </Text>
+                      <Text style={style.text}>Question: {item.question}</Text>
+                      <Text style={style.text}>
+                        Correct answer: {item.correct_answer}
+                      </Text>
+                      <Text style={style.text}>
+                        Your answer: {item.your_answer}
+                      </Text>
+                      <View borderBottomWidth={1} style={{ padding: "5%" }} />
+                    </View>
+                  )}
+                />
+              </View>
+            )}
+            keyExtractor={(item, index) => index}
+          />
+        ) : (
+          []
+        )}
+      </View>
     </View>
   );
 }
