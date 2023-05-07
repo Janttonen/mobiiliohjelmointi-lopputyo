@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { fetchJson, checkUrl } from "../util.js";
-import style from "../style.js";
 import { saveItems } from "../firebase.js";
+import style from "../style.js";
 
 // Trivia page
 export default function Trivia({ navigation, route }) {

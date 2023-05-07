@@ -8,8 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import style from "../style";
-import { gameOptions } from "../util.js";
-import { category_API, fetchJson } from "../util.js";
+import { category_API, fetchJson, gameOptions } from "../util.js";
 
 // Custom game
 export default function CustomGame({ navigation }) {
@@ -27,6 +26,7 @@ export default function CustomGame({ navigation }) {
 
   const fetchCategories = () => {
     fetchJson(category_API).then((data) => {
+      // add 'Any category' to list
       data.trivia_categories.unshift({ id: 0, name: "Any category" });
       setCategories(data.trivia_categories);
     });

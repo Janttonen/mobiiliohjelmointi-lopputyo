@@ -5,7 +5,7 @@ import { firebaseConfig } from "../firebase.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
 
-// Homepage
+// Details about played games
 export default function PlayedGameDetails({ navigation, route }) {
   const [data, setData] = useState(null);
 

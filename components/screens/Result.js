@@ -63,5 +63,3 @@ export default function Result({ navigation, route }) {
   );
 }
 
-// https://reactnavigation.org/docs/stack-actions/
-// https://reactnavigation.org/docs/use-is-focused/
